@@ -27,9 +27,9 @@ function cacherPopup() {
  * l'affichage de la popup. 
  */
 function initAddEventListenerPopup() {
-    // On écoute le click sur le bouton "partager"
     let btnPartage = document.querySelector(".zonePartage button")
     let popupBackground = document.querySelector(".popupBackground")
+    // On écoute le click sur le bouton "partager"
     btnPartage.addEventListener("click", () => {
         // Quand on a cliqué sur le bouton partagé, on affiche la popup
         afficherPopup()
@@ -38,15 +38,9 @@ function initAddEventListenerPopup() {
     // On écoute le click sur la div "popupBackground"
     popupBackground.addEventListener("click", (event) => {
         // Si on a cliqué précisément sur la popupBackground 
-        // (et pas un autre élément qui se trouve dedans)
         if (event.target === popupBackground) {
             // Alors on cache la popup
             cacherPopup()
         }
     })
 }
-
-
-
-
-

@@ -5,7 +5,7 @@
  *********************************************************************************/
 
 /**
- * Cette fonction affiche dans la console le score de l'utilisateur
+ * Cette fonction affiche le score de l'utilisateur
  * @param {number} score : le score de l'utilisateur
  * @param {number} nombrePropositions : le nombre de mots/phrases proposés à l'utilisateur
  */
@@ -69,16 +69,15 @@ function validerEmail(email) {
  * les messages d'erreurs. 
  * @param {string} message 
  */
-function afficherMessageErreur(message) {
+function afficherMessageErreurPopup(message) {
 
     let spanErreurMessage = document.getElementById("erreurMessage")
 
     if (!spanErreurMessage) {
 
-        let divPopup = document.querySelector(".popup")
         spanErreurMessage = document.createElement("span")
         spanErreurMessage.id = "erreurMessage"
-
+        let divPopup = document.querySelector(".popup")
         divPopup.append(spanErreurMessage)
     }
 
@@ -91,7 +90,7 @@ function afficherMessageErreur(message) {
  * de la popup de partage et d'appeler l'affichage de l'email avec les bons paramètres.
  * @param {string} scoreEmail 
  */
-function gererFormulaire(scoreEmail) {
+function gererFormulairePopup(scoreEmail) {
     try {
         let baliseNom = document.getElementById("nom")
         let nomJoueur = baliseNom.value
@@ -101,12 +100,12 @@ function gererFormulaire(scoreEmail) {
         let emailDestination = baliseEmail.value
         validerEmail(emailDestination)
 
-        afficherMessageErreur("")
+        afficherMessageErreurPopup("")
 
         afficherEmail(nomJoueur, emailDestination, scoreEmail);
 
     } catch (error) {
-        afficherMessageErreur(error.message)
+        afficherMessageErreurPopup(error.message)
     }
 }
 
@@ -140,6 +139,19 @@ function lancerJeu() {
 
     afficherProposition(listePropositions[i]);
 
+    // Gestion de l'événement change sur les boutons radios. 
+    for (let index = 0; index < listeBtnRadio.length; index++) {
+        listeBtnRadio[index].addEventListener("change", (event) => {
+            // Si le bouton "mots" est sélectionné, la listeMots s'affiche. 
+            if (event.target.value === "1") {
+                listePropositions = listeMots
+            } else {
+                listePropositions = listePhrases
+            };
+            afficherProposition(listePropositions[i])//L'affichage se fait instantanément la liste choisie
+        })
+    }
+
     // Gestion de l'événement click du bouton "valider"
     btnValider.addEventListener("click", () => {
         if (inputEcriture.value === listePropositions[i]) {
@@ -156,24 +168,12 @@ function lancerJeu() {
         }
     })
 
-    // Gestion de l'événement change sur les boutons radios. 
-    for (let index = 0; index < listeBtnRadio.length; index++) {
-        listeBtnRadio[index].addEventListener("change", (event) => {
-            // Si le bouton "mots" est sélectionné, la listeMots s'affiche. 
-            if (event.target.value === "1") {
-                listePropositions = listeMots
-            } else {
-                listePropositions = listePhrases
-            };
-            afficherProposition(listePropositions[i])//L'affichage se fait instantanément la liste choisie
-        })
-    }
     // Gestion de l'événement submit sur le formulaire de partage. 
     let form = document.querySelector("form")
     form.addEventListener("submit", (event) => {
         event.preventDefault()
         let scoreEmail = `${score} / ${i}`
-        gererFormulaire(scoreEmail)
+        gererFormulairePopup(scoreEmail)
     })
 
     afficherResultat(score, i);
